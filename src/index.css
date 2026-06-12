@@ -57,6 +57,36 @@ body {
   @apply bg-slate-200 dark:bg-slate-800;
 }
 
+/* divIcon markers: strip the default white box so only our SVG shows. */
+.fleet-vehicle-icon,
+.fleet-facility-icon {
+  background: transparent;
+  border: 0;
+}
+
+/* Glide vehicle markers between the ticker's 1s position updates so movement
+ * reads as continuous rather than stepwise. */
+.leaflet-marker-icon.fleet-vehicle-icon {
+  transition: transform 1s linear;
+}
+/* Don't fight Leaflet's own pan/zoom animation. */
+.leaflet-zoom-anim .leaflet-marker-icon.fleet-vehicle-icon,
+.leaflet-drag-target .leaflet-marker-icon.fleet-vehicle-icon {
+  transition: none;
+}
+.fleet-vehicle-marker svg {
+  filter: drop-shadow(0 1px 2px rgb(15 23 42 / 0.45));
+}
+
+/* Leaflet popups adopt the app surface colors in dark mode. */
+.dark .leaflet-popup-content-wrapper,
+.dark .leaflet-popup-tip {
+  @apply bg-slate-900 text-slate-100;
+}
+.leaflet-popup-content {
+  @apply text-xs;
+}
+
 /* Entrance animations. */
 @keyframes modal-in {
   from {

@@ -130,6 +130,9 @@ export function createSeedData(): Db {
   ]
 
   const orders: Order[] = [
+    // driver-1 is already out on shift today (see `shifts` below), so their two
+    // deliveries are in transit — this makes the Live Fleet Map show a moving
+    // vehicle the moment an admin opens it.
     {
       id: 'order-1',
       destinationId: 'terminal-5',
@@ -137,7 +140,7 @@ export function createSeedData(): Db {
       quantity: 5000,
       deliveryDate: t,
       assignedDriverId: 'driver-1',
-      status: 'assigned',
+      status: 'in_transit',
     },
     {
       id: 'order-2',
@@ -146,7 +149,7 @@ export function createSeedData(): Db {
       quantity: 3000,
       deliveryDate: t,
       assignedDriverId: 'driver-1',
-      status: 'assigned',
+      status: 'in_transit',
     },
     {
       id: 'order-3',
@@ -212,8 +215,18 @@ export function createSeedData(): Db {
     { id: 'alloc-4', vehicleId: 'vehicle-4', driverId: 'driver-4', date: yesterday },
   ]
 
-  // One historical, ended shift so Shift History has content on first load.
   const shifts: Shift[] = [
+    // An active shift for today so the live map is populated on first load.
+    {
+      id: 'shift-0',
+      driverId: 'driver-1',
+      vehicleId: 'vehicle-1',
+      date: t,
+      status: 'active',
+      startedAt: `${t}T07:30:00.000Z`,
+      orderIds: ['order-1', 'order-2'],
+    },
+    // One historical, ended shift so Shift History has content on first load.
     {
       id: 'shift-1',
       driverId: 'driver-4',
