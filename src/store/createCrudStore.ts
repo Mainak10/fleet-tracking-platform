@@ -44,23 +44,59 @@ export function createCrudStore<T extends { id: string }>(
       }
     },
 
+    // The three mutations below are optimistic: the UI updates immediately and
+    // reconciles with the server response, rolling back to the pre-call state if
+    // the request fails. Errors are always re-thrown so callers (forms/toasts)
+    // still see the failure.
     create: async (body) => {
-      const created = await service.create(body)
-      set((state) => ({ items: [...state.items, created] }))
-      return created
+      const tempId = `tmp-${Math.random().toString(36).slice(2, 9)}`
+      const optimistic = { ...(body as T), id: tempId }
+      set((state) => ({ items: [...state.items, optimistic] }))
+      try {
+        const created = await service.create(body)
+        // Replace the temp row in place so ordering is preserved.
+        set((state) => ({
+          items: state.items.map((item) => (item.id === tempId ? created : item)),
+        }))
+        return created
+      } catch (err) {
+        set((state) => ({ items: state.items.filter((item) => item.id !== tempId) }))
+        throw err
+      }
     },
 
     update: async (id, body) => {
-      const updated = await service.update(id, body)
+      const previous = get().items.find((item) => item.id === id)
       set((state) => ({
-        items: state.items.map((item) => (item.id === id ? updated : item)),
+        items: state.items.map((item) =>
+          item.id === id ? { ...item, ...body } : item,
+        ),
       }))
-      return updated
+      try {
+        const updated = await service.update(id, body)
+        set((state) => ({
+          items: state.items.map((item) => (item.id === id ? updated : item)),
+        }))
+        return updated
+      } catch (err) {
+        if (previous) {
+          set((state) => ({
+            items: state.items.map((item) => (item.id === id ? previous : item)),
+          }))
+        }
+        throw err
+      }
     },
 
     remove: async (id) => {
-      await service.remove(id)
+      const snapshot = get().items
       set((state) => ({ items: state.items.filter((item) => item.id !== id) }))
+      try {
+        await service.remove(id)
+      } catch (err) {
+        set({ items: snapshot })
+        throw err
+      }
     },
 
     getById: (id) => get().items.find((item) => item.id === id),

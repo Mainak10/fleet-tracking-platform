@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import { X } from 'lucide-react'
 import { Sidebar, SidebarContent } from './Sidebar'
 import { Topbar } from './Topbar'
@@ -12,6 +12,7 @@ export function AppShell() {
   useThemeEffect()
   useBootstrap()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { pathname } = useLocation()
 
   return (
     <div className="flex h-full">
@@ -37,7 +38,7 @@ export function AppShell() {
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar onOpenMenu={() => setMobileOpen(true)} />
         <main className="bg-grid flex-1 overflow-y-auto">
-          <div className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
+          <div key={pathname} className="animate-page mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
             <ErrorBoundary>
               <Outlet />
             </ErrorBoundary>

@@ -126,6 +126,15 @@ export function DataTable<T>({
                 {columns.map((col) => (
                   <th
                     key={col.key}
+                    aria-sort={
+                      col.sortValue
+                        ? sortKey === col.key
+                          ? sortDir === 'asc'
+                            ? 'ascending'
+                            : 'descending'
+                          : 'none'
+                        : undefined
+                    }
                     className={cn(
                       'px-4 py-2.5 font-medium text-slate-500 dark:text-slate-400',
                       alignClass[col.align ?? 'left'],
@@ -160,9 +169,22 @@ export function DataTable<T>({
                 <tr
                   key={rowKey(row)}
                   onClick={onRowClick ? () => onRowClick(row) : undefined}
+                  role={onRowClick ? 'button' : undefined}
+                  tabIndex={onRowClick ? 0 : undefined}
+                  onKeyDown={
+                    onRowClick
+                      ? (e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault()
+                            onRowClick(row)
+                          }
+                        }
+                      : undefined
+                  }
                   className={cn(
                     'border-b border-slate-100 last:border-0 dark:border-slate-800/60',
-                    onRowClick && 'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40',
+                    onRowClick &&
+                      'cursor-pointer hover:bg-slate-50 focus:bg-slate-50 focus:outline-none dark:hover:bg-slate-800/40 dark:focus:bg-slate-800/40',
                   )}
                 >
                   {columns.map((col) => (
