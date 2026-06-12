@@ -1,6 +1,8 @@
 import { Navigate, Route, BrowserRouter, Routes } from 'react-router-dom'
 import { AppShell } from '@/components/layout/AppShell'
 import { Placeholder } from '@/pages/Placeholder'
+import { MasterDataPage } from '@/features/master-data/MasterDataPage'
+import { InventoryPage } from '@/pages/admin/InventoryPage'
 
 /**
  * Application routing. A single shell hosts both personas; the persona switcher
@@ -20,11 +22,8 @@ export function App() {
             <Route path="map" element={<Placeholder eyebrow="Admin" title="Live Fleet Map" />} />
             <Route path="orders" element={<Placeholder eyebrow="Admin" title="Orders" />} />
             <Route path="allocations" element={<Placeholder eyebrow="Admin" title="Vehicle Allocation" />} />
-            <Route path="inventory" element={<Placeholder eyebrow="Admin" title="Inventory" />} />
-            <Route
-              path="master-data/:entity"
-              element={<Placeholder eyebrow="Admin" title="Master Data" />}
-            />
+            <Route path="inventory" element={<InventoryPage />} />
+            <Route path="master-data/:entity" element={<MasterDataPage />} />
           </Route>
 
           {/* Driver */}
