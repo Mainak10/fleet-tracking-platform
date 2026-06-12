@@ -1,11 +1,13 @@
 import { Navigate, Route, BrowserRouter, Routes } from 'react-router-dom'
 import { AppShell } from '@/components/layout/AppShell'
-import { Placeholder } from '@/pages/Placeholder'
 import { MasterDataPage } from '@/features/master-data/MasterDataPage'
 import { InventoryPage } from '@/pages/admin/InventoryPage'
 import { OrdersPage } from '@/pages/admin/OrdersPage'
 import { AllocationsPage } from '@/pages/admin/AllocationsPage'
 import { LiveMapPage } from '@/pages/admin/LiveMapPage'
+import { ShiftPage } from '@/pages/driver/ShiftPage'
+import { DriverMapPage } from '@/pages/driver/DriverMapPage'
+import { HistoryPage } from '@/pages/driver/HistoryPage'
 
 /**
  * Application routing. A single shell hosts both personas; the persona switcher
@@ -32,9 +34,9 @@ export function App() {
           {/* Driver */}
           <Route path="driver">
             <Route index element={<Navigate to="/driver/shift" replace />} />
-            <Route path="shift" element={<Placeholder eyebrow="Driver" title="My Shift" />} />
-            <Route path="map" element={<Placeholder eyebrow="Driver" title="Live Map" />} />
-            <Route path="history" element={<Placeholder eyebrow="Driver" title="Shift History" />} />
+            <Route path="shift" element={<ShiftPage />} />
+            <Route path="map" element={<DriverMapPage />} />
+            <Route path="history" element={<HistoryPage />} />
           </Route>
         </Route>
 

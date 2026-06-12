@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import type { VehiclePosition } from '@/types/domain'
-import { advance, deriveLeg, initialPosition, TICK_MS, type Leg } from '@/sim/engine'
+import { advance, deriveLeg, GPS_STEP_MS, initialPosition, TICK_MS, type Leg } from '@/sim/engine'
 import { useFacilitiesStore } from './entities'
 import { useOrdersStore } from './orders'
 import { useShiftsStore } from './shifts'
@@ -19,6 +19,8 @@ interface PositionsState {
   refresh: () => void
   /** Advance every active vehicle one step. Exposed for tests. */
   tick: (dtMs?: number) => void
+  /** Driver action: jump one vehicle forward, simulating a fresh GPS fix. */
+  sendGpsUpdate: (vehicleId: string) => void
 }
 
 /**
@@ -80,6 +82,18 @@ export const usePositionsStore = create<PositionsState>((set, get) => ({
 
   tick: (dtMs = TICK_MS) =>
     set((s) => ({ positions: reconcile(s.positions, activeLegs(), true, dtMs) })),
+
+  sendGpsUpdate: (vehicleId) =>
+    set((s) => {
+      const leg = activeLegs().get(vehicleId)
+      if (!leg) return {}
+      const existing = s.positions[vehicleId]
+      const base =
+        existing && existing.activeOrderId === leg.orderId
+          ? existing
+          : initialPosition(vehicleId, leg)
+      return { positions: { ...s.positions, [vehicleId]: advance(base, leg, GPS_STEP_MS) } }
+    }),
 
   start: () => {
     get().refresh()

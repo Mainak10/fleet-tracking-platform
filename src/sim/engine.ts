@@ -22,6 +22,12 @@ export const SPEED_KMH = 1200
 /** Floor on a leg's duration so very short hops still animate visibly. */
 export const MIN_ETA_MS = 20_000
 
+/**
+ * How far a single driver "Send GPS Update" advances the vehicle — a noticeable
+ * jump forward, simulating the driver's device reporting a fresh position fix.
+ */
+export const GPS_STEP_MS = 8_000
+
 /** A single origin→destination trip a vehicle is currently driving. */
 export interface Leg {
   orderId: string
