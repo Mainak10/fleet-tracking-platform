@@ -1,7 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import 'tailwindcss';
 @import 'leaflet/dist/leaflet.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Mission-control design system. Cool slate neutrals, a hazard-amber accent,
+ * and monospace for operational data. Tokens are exposed as Tailwind utilities.
+ */
+@theme {
+  --font-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+
+  --color-brand-50: #fffbeb;
+  --color-brand-100: #fef3c7;
+  --color-brand-200: #fde68a;
+  --color-brand-300: #fcd34d;
+  --color-brand-400: #fbbf24;
+  --color-brand-500: #f59e0b;
+  --color-brand-600: #d97706;
+  --color-brand-700: #b45309;
+  --color-brand-800: #92400e;
+  --color-brand-900: #78350f;
+}
 
 html,
 body,
@@ -11,10 +33,61 @@ body,
 
 body {
   margin: 0;
-  @apply bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
+  font-family: var(--font-sans);
+  @apply bg-slate-100 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
 }
 
-/* Leaflet renders inside Tailwind layout; keep its font consistent */
+/* Subtle dot-grid texture for the control-room shell backdrop. */
+.bg-grid {
+  background-image: radial-gradient(circle, rgba(100, 116, 139, 0.18) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.dark .bg-grid {
+  background-image: radial-gradient(circle, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+}
+
+/* Eyebrow / section label treatment used across the UI. */
+.eyebrow {
+  font-family: var(--font-mono);
+  @apply text-[11px] font-medium uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500;
+}
+
 .leaflet-container {
-  font-family: inherit;
+  font-family: var(--font-sans);
+  @apply bg-slate-200 dark:bg-slate-800;
+}
+
+/* Entrance animations. */
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+.animate-modal {
+  animation: modal-in 0.15s ease-out;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.animate-toast {
+  animation: toast-in 0.2s ease-out;
+}
+
+/* Thin, unobtrusive scrollbars to match the dense data aesthetic. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(148 163 184 / 0.5) transparent;
 }
