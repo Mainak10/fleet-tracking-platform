@@ -3,6 +3,8 @@ import { AppShell } from '@/components/layout/AppShell'
 import { Placeholder } from '@/pages/Placeholder'
 import { MasterDataPage } from '@/features/master-data/MasterDataPage'
 import { InventoryPage } from '@/pages/admin/InventoryPage'
+import { OrdersPage } from '@/pages/admin/OrdersPage'
+import { AllocationsPage } from '@/pages/admin/AllocationsPage'
 
 /**
  * Application routing. A single shell hosts both personas; the persona switcher
@@ -20,8 +22,8 @@ export function App() {
           <Route path="admin">
             <Route index element={<Navigate to="/admin/map" replace />} />
             <Route path="map" element={<Placeholder eyebrow="Admin" title="Live Fleet Map" />} />
-            <Route path="orders" element={<Placeholder eyebrow="Admin" title="Orders" />} />
-            <Route path="allocations" element={<Placeholder eyebrow="Admin" title="Vehicle Allocation" />} />
+            <Route path="orders" element={<OrdersPage />} />
+            <Route path="allocations" element={<AllocationsPage />} />
             <Route path="inventory" element={<InventoryPage />} />
             <Route path="master-data/:entity" element={<MasterDataPage />} />
           </Route>
