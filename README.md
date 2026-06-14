@@ -1,7 +1,10 @@
 # FleetOps — Fleet Tracking Platform
 
-A single-page web app for a fuel-distribution fleet, built for the FleetPanda
-**Lead Frontend** take-home. Two personas — **Admin** (operations) and **Driver**
+### Deployed Link
+
+https://fleet-tracking-platform-opal.vercel.app/
+
+A single-page web app for a fuel-distribution fleet. Two personas — **Admin** (operations) and **Driver**
 (execution) — work over one shared, reactive data layer. There is no backend; the
 API is mocked at the network level with [MSW](https://mswjs.io/), so the app runs
 and deploys as a self-contained static SPA.
@@ -9,22 +12,22 @@ and deploys as a self-contained static SPA.
 The product is organised around one reactive loop the demo shows end-to-end:
 
 > **Admin** allocates a vehicle to a driver → **Driver** starts a shift and the
-> orders go *in transit* → a live, simulated truck moves across the **Live Fleet
+> orders go _in transit_ → a live, simulated truck moves across the **Live Fleet
 > Map** → **Driver** completes a delivery → the destination terminal's
 > **inventory** updates → the **Admin** map and inventory dashboard reflect it.
 
 ## Stack
 
-| Concern | Choice |
-| --- | --- |
-| Build / dev | Vite + React 19 + TypeScript |
-| State | Zustand (domain-sliced stores) |
-| Mock API | MSW over an in-memory seeded DB |
-| Maps | Leaflet + react-leaflet (CARTO tiles) |
-| Forms | react-hook-form + Zod |
-| Styling | Tailwind CSS (custom "mission-control" theme, light/dark) |
-| Testing | Vitest + React Testing Library (reusing the MSW handlers) |
-| Routing | react-router |
+| Concern     | Choice                                                    |
+| ----------- | --------------------------------------------------------- |
+| Build / dev | Vite + React 19 + TypeScript                              |
+| State       | Zustand (domain-sliced stores)                            |
+| Mock API    | MSW over an in-memory seeded DB                           |
+| Maps        | Leaflet + react-leaflet (CARTO tiles)                     |
+| Forms       | react-hook-form + Zod                                     |
+| Styling     | Tailwind CSS (custom "mission-control" theme, light/dark) |
+| Testing     | Vitest + React Testing Library (reusing the MSW handlers) |
+| Routing     | react-router                                              |
 
 ## Getting started
 
@@ -33,15 +36,15 @@ npm install
 npm run dev        # http://localhost:5173
 ```
 
-| Script | Purpose |
-| --- | --- |
-| `npm run dev` | Vite dev server (MSW starts before the app mounts) |
-| `npm run build` | Type-check (`tsc -b`) + production build to `dist/` |
-| `npm run preview` | Serve the production build locally |
-| `npm run lint` | ESLint |
-| `npm test` | Vitest run |
-| `npm run test:watch` | Vitest watch mode |
-| `npm run test:coverage` | Vitest with a v8 coverage report |
+| Script                  | Purpose                                             |
+| ----------------------- | --------------------------------------------------- |
+| `npm run dev`           | Vite dev server (MSW starts before the app mounts)  |
+| `npm run build`         | Type-check (`tsc -b`) + production build to `dist/` |
+| `npm run preview`       | Serve the production build locally                  |
+| `npm run lint`          | ESLint                                              |
+| `npm test`              | Vitest run                                          |
+| `npm run test:watch`    | Vitest watch mode                                   |
+| `npm run test:coverage` | Vitest with a v8 coverage report                    |
 
 No environment variables or external services are required — MSW also runs in the
 built app, so `npm run preview` (or any static host) is fully functional offline,
@@ -57,7 +60,7 @@ Switch personas from the **switcher in the top-right header** (no login):
 
 The seed data ships with one driver already **on shift today** (John Smith /
 TRK-101), so the Live Fleet Map shows a moving vehicle immediately. Another driver
-(Maria Garcia) has an allocation but no shift, so you can demo **Start Shift →
+(Maria Garcia) has an allocation but no shift, so we can demo **Start Shift →
 deliver → inventory update** from scratch.
 
 ## Architecture at a glance
